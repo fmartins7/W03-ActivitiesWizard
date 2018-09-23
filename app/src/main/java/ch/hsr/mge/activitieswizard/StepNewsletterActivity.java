@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class StepNewsletterActivity extends AppCompatActivity implements View.OnClickListener {
+public class StepNewsletterActivity extends AppCompatActivity {
 
     private UserRegistrationData data;
 
@@ -18,25 +18,23 @@ public class StepNewsletterActivity extends AppCompatActivity implements View.On
 
         data = (UserRegistrationData) getIntent().getSerializableExtra(Constants.REGISTRATION_DATA);
 
-        TextView question = (TextView) findViewById(R.id.newsletterTextView);
+        TextView question = findViewById(R.id.newsletterTextView);
+        Switch newsletter = findViewById(R.id.newsletterSwitch);
         question.setText(data.getName() + ", möchten Sie unseren Newsletter abonnieren?");
 
-        findViewById(R.id.nextButton).setOnClickListener(this);
-    }
+        findViewById(R.id.nextButton).setOnClickListener(v -> {
+            boolean wantsNewsletter = newsletter.isChecked();
+            data.setNewsletter(wantsNewsletter);
 
-    public void onClick(View view) {
-        Switch newsletter = (Switch) findViewById(R.id.newsletterSwitch);
-        boolean wantsNewsletter = newsletter.isChecked();
-        data.setNewsletter(wantsNewsletter);
+            Intent intent;
+            if (wantsNewsletter) {
+                intent = new Intent(this, StepSubscribedActivity.class);
+            } else {
+                intent = new Intent(this, StepDoneActivity.class);
+            }
 
-        Intent intent;
-        if (wantsNewsletter) {
-            intent = new Intent(this, StepSubscribedActivity.class);
-        } else {
-            intent = new Intent(this, StepDoneActivity.class);
-        }
-
-        intent.putExtra(Constants.REGISTRATION_DATA, data);
-        startActivity(intent);
+            intent.putExtra(Constants.REGISTRATION_DATA, data);
+            startActivity(intent);
+        });
     }
 }

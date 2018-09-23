@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-public class StepNameActivity extends AppCompatActivity implements View.OnClickListener {
+public class StepNameActivity extends AppCompatActivity {
     private EditText name;
     private UserRegistrationData data;
 
@@ -14,16 +14,14 @@ public class StepNameActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_name);
-        name = (EditText) findViewById(R.id.nameEditText);
+        name = findViewById(R.id.nameEditText);
         data = (UserRegistrationData) getIntent().getSerializableExtra(Constants.REGISTRATION_DATA);
-        findViewById(R.id.nextButton).setOnClickListener(this);
+        findViewById(R.id.nextButton).setOnClickListener(v -> {
+            data.setName(name.getText().toString());
+            Intent intent = new Intent(this, StepNewsletterActivity.class);
+            intent.putExtra(Constants.REGISTRATION_DATA, data);
+            startActivity(intent);
+        });
     }
 
-    public void onClick(View view) {
-        data.setName(name.getText().toString());
-
-        Intent intent = new Intent(this, StepNewsletterActivity.class);
-        intent.putExtra(Constants.REGISTRATION_DATA, data);
-        startActivity(intent);
-    }
 }

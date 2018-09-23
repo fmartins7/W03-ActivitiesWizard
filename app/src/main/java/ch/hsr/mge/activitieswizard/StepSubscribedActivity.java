@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class StepSubscribedActivity extends AppCompatActivity implements View.OnClickListener {
+public class StepSubscribedActivity extends AppCompatActivity {
 
     private UserRegistrationData data;
 
@@ -15,12 +15,10 @@ public class StepSubscribedActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_step_subscribed);
         data = (UserRegistrationData) getIntent().getSerializableExtra(Constants.REGISTRATION_DATA);
 
-        findViewById(R.id.nextButton).setOnClickListener(this);
-    }
-
-    public void onClick(View view) {
-        Intent intent = new Intent(this, StepDoneActivity.class);
-        intent.putExtra(Constants.REGISTRATION_DATA, data);
-        startActivity(intent);
+        findViewById(R.id.nextButton).setOnClickListener(v -> {
+            Intent intent = new Intent(this, StepDoneActivity.class);
+            intent.putExtra(Constants.REGISTRATION_DATA, data);
+            startActivity(intent);
+        });
     }
 }
